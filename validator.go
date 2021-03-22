@@ -1,5 +1,7 @@
 package validator
 
+import "strings"
+
 func IsAlpha(str string) bool {
 	return alphaRegex.MatchString(str)
 }
@@ -113,7 +115,17 @@ func IsMultibyte(str string) bool {
 }
 
 func IsDataURI(str string) bool {
-	return dataURIRegex.MatchString(str)
+	uri := strings.SplitN(str, ",", 2)
+
+	if len(uri) != 2 {
+		return false
+	}
+
+	if !dataURIRegex.MatchString(uri[0]) {
+		return false
+	}
+
+	return base64Regex.MatchString(uri[1])
 }
 
 func IsLatitude(str string) bool {
@@ -153,7 +165,7 @@ func IsETHAddressLower(str string) bool {
 }
 
 func IsETHAddressUpper(str string) bool {
-	return ethaddressRegexUpper.MatchString(str)
+	return ethAddressRegexUpper.MatchString(str)
 }
 
 func IsURLEncoded(str string) bool {

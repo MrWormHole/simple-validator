@@ -85,7 +85,7 @@ var (
 	btcUpperAddressRegex       = regexp.MustCompile(btcAddressUpperRegexString)
 	btcLowerAddressRegex       = regexp.MustCompile(btcAddressLowerRegexString)
 	ethAddressRegex            = regexp.MustCompile(ethAddressRegexString)
-	ethaddressRegexUpper       = regexp.MustCompile(ethAddressUpperRegexString)
+	ethAddressRegexUpper       = regexp.MustCompile(ethAddressUpperRegexString)
 	ethAddressRegexLower       = regexp.MustCompile(ethAddressLowerRegexString)
 	urlEncodedRegex            = regexp.MustCompile(urlEncodedRegexString)
 	htmlEncodedRegex           = regexp.MustCompile(htmlEncodedRegexString)
