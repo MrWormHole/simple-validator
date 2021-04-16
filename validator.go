@@ -1,6 +1,10 @@
 package validator
 
-import "strings"
+import (
+	"encoding/hex"
+	"golang.org/x/crypto/sha3"
+	"strings"
+)
 
 func IsAlpha(str string) bool {
 	return alphaRegex.MatchString(str)
@@ -141,30 +145,45 @@ func IsIPAddress(str string) bool {
 }
 
 func IsDomainName(str string) bool {
+	domain := strings.Split(str, ".")
+	if domain[len(domain) - 1] == "" {
+		return false
+	}
+
 	return domainNameRegex.MatchString(str)
 }
 
-func IsBTCAddress(str string) bool {
-	return btcAddressRegex.MatchString(str)
-}
-
-func IsBTCAddressLower(str string) bool {
-	return btcLowerAddressRegex.MatchString(str)
-}
-
-func IsBTCAddressUpper(str string) bool {
-	return btcUpperAddressRegex.MatchString(str)
-}
-
 func IsETHAddress(str string) bool {
-	return ethAddressRegex.MatchString(str)
+	if !ethAddressRegex.MatchString(str) {
+		return false
+	}
+
+	if isETHAddressLower(str) || isETHAddressUpper(str) {
+		return true
+	}
+
+	address := str[2:]
+	h := sha3.NewLegacyKeccak256()
+	_, _ = h.Write([]byte(strings.ToLower(address)))
+	hash := hex.EncodeToString(h.Sum(nil))
+
+	for i := 0; i < len(address); i++ {
+		if address[i] <= '9' {
+			continue
+		}
+		if hash[i] > '7' && address[i] >= 'a' || hash[i] <= '7' && address[i] <= 'F' {
+			return false
+		}
+	}
+
+	return true
 }
 
-func IsETHAddressLower(str string) bool {
+func isETHAddressLower(str string) bool {
 	return ethAddressRegexLower.MatchString(str)
 }
 
-func IsETHAddressUpper(str string) bool {
+func isETHAddressUpper(str string) bool {
 	return ethAddressRegexUpper.MatchString(str)
 }
 
@@ -178,4 +197,8 @@ func IsHTMLEncoded(str string) bool {
 
 func IsHTML(str string) bool {
 	return htmlRegex.MatchString(str)
+}
+
+func IsEmpty(str string) bool {
+	return strings.Trim(str, " ") == ""
 }
