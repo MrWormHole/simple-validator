@@ -114,8 +114,8 @@ func IsPrintableASCII(str string) bool {
 	return printableASCIIRegex.MatchString(str)
 }
 
-func IsMultibyte(str string) bool {
-	return multibyteRegex.MatchString(str)
+func HasMultibyteChar(str string) bool {
+	return multibyteCharRegex.MatchString(str)
 }
 
 func IsDataURI(str string) bool {

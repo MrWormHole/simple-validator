@@ -30,7 +30,7 @@ const (
 	uuidMixedRegexString             = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
 	asciiRegexString                 = "^[\x00-\x7F]*$"
 	printableASCIIRegexString        = "^[\x20-\x7E]*$"
-	multibyteRegexString             = "[^\x00-\x7F]"
+	multibyteCharRegexString             = "[^\x00-\x7F]"
 	dataURIRegexString               = `^data:((?:\w+\/(?:([^;]|;[^;]).)+)?)`
 	latitudeRegexString              = "^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?)$"
 	longitudeRegexString             = "^[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$"
@@ -72,7 +72,7 @@ var (
 	uuidMixedRegex             = regexp.MustCompile(uuidMixedRegexString)
 	asciiRegex                 = regexp.MustCompile(asciiRegexString)
 	printableASCIIRegex        = regexp.MustCompile(printableASCIIRegexString)
-	multibyteRegex             = regexp.MustCompile(multibyteRegexString)
+	multibyteCharRegex             = regexp.MustCompile(multibyteCharRegexString)
 	dataURIRegex               = regexp.MustCompile(dataURIRegexString)
 	latitudeRegex              = regexp.MustCompile(latitudeRegexString)
 	longitudeRegex             = regexp.MustCompile(longitudeRegexString)

@@ -192,3 +192,142 @@ func TestIsIPAddress(t *testing.T) {
 		assert.Equal(t.expected, actual)
 	}
 }
+
+func TestIsLongitude(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"-180.000", true},
+		{"180.1", false},
+		{"+73.234", true},
+		{"+382.3811", false},
+		{"23.11111111", true},
+		{"180", true},
+		{"-180.0", true},
+		{"-180", true},
+		{"180.1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsLongitude(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsLatitude(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"-90.000", true},
+		{"+90", true},
+		{"47.1231231", true},
+		{"+99.9", false},
+		{"108", false},
+		{"90", true},
+		{"-90.0", true},
+		{"-90", true},
+		{"90.1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsLatitude(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsDataURI(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"data:image/png;base64,TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4=", true},
+		{"data:text/plain;base64,Vml2YW11cyBmZXJtZW50dW0gc2VtcGVyIHBvcnRhLg==", true},
+		{"image/gif;base64,U3VzcGVuZGlzc2UgbGVjdHVzIGxlbw==", false},
+		{"data:image/gif;base64,MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuMPNS1Ufof9EW/M98FNw" +
+			"UAKrwflsqVxaxQjBQnHQmiI7Vac40t8x7pIb8gLGV6wL7sBTJiPovJ0V7y7oc0Ye" +
+			"rhKh0Rm4skP2z/jHwwZICgGzBvA0rH8xlhUiTvcwDCJ0kc+fh35hNt8srZQM4619" +
+			"FTgB66Xmp4EtVyhpQV+t02g6NzK72oZI0vnAvqhpkxLeLiMCyrI416wHm5Tkukhx" +
+			"QmcL2a6hNOyu0ixX/x2kSFXApEnVrJ+/IxGyfyw8kf4N2IZpW5nEP847lpfj0SZZ" +
+			"Fwrd1mnfnDbYohX2zRptLy2ZUn06Qo9pkG5ntvFEPo9bfZeULtjYzIl6K8gJ2uGZHQIDAQAB", true},
+		{"data:image/png;base64,12345", false},
+		{"", false},
+		{"data:text,:;base85,U3VzcGVuZGlzc2UgbGVjdHVzIGxlbw==", false},
+		{"data:image/jpeg;key=value;base64,UEsDBBQAAAAI", true},
+		{"data:image/jpeg;key=value,UEsDBBQAAAAI", true},
+		{"data:;base64;sdfgsdfgsdfasdfa=s,UEsDBBQAAAAI", true},
+		{"data:,UEsDBBQAAAAI", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsDataURI(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestHasMultibyteChar(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"abc", false},
+		{"123", false},
+		{"<>@;.-=", false},
+		{"ひらがな・カタカナ、．漢字", true},
+		{"あいうえお foobar", true},
+		{"test＠example.com", true},
+		{"test＠example.com", true},
+		{"1234abcDEｘｙｚ", true},
+		{"ｶﾀｶﾅ", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.HasMultibyteChar(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsASCII(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", true},
+		{"ｆｏｏbar", false},
+		{"ｘｙｚ０９８", false},
+		{"１２３456", false},
+		{"ｶﾀｶﾅ", false},
+		{"foobar", true},
+		{"0987654321", true},
+		{"test@example.com", true},
+		{"1234abcDEF", true},
+		{"", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsASCII(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsPrintableASCII(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", true},
+		{"ｆｏｏbar", false},
+		{"ｘｙｚ０９８", false},
+		{"１２３456", false},
+		{"ｶﾀｶﾅ", false},
+		{"foobar", true},
+		{"0987654321", true},
+		{"test@example.com", true},
+		{"1234abcDEF", true},
+		{"newline\n", false},
+		{"\x19test\x7F", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsPrintableASCII(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
