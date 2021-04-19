@@ -67,11 +67,45 @@ func IsBase64URL(str string) bool {
 }
 
 func IsISBN10(str string) bool {
-	return isbn10Regex.MatchString(str)
+	cleaned := strings.Replace(strings.Replace(str, "-", "", 3), " ", "", 3)
+
+	if !isbn10Regex.MatchString(cleaned) {
+		return false
+	}
+
+	var checksum int32
+	var i int32
+
+	for i = 0; i < 9; i++ {
+		checksum += (i + 1) * int32(cleaned[i]-'0')
+	}
+
+	if cleaned[9] == 'X' {
+		checksum += 10 * 10
+	} else {
+		checksum += 10 * int32(cleaned[9]-'0')
+	}
+
+	return checksum % 11 == 0
 }
 
 func IsISBN13(str string) bool {
-	return isbn13Regex.MatchString(str)
+	cleaned := strings.Replace(strings.Replace(str, "-", "", 4), " ", "", 4)
+
+	if !isbn13Regex.MatchString(cleaned) {
+		return false
+	}
+
+	var checksum int32
+	var i int32
+
+	factor := []int32{1, 3}
+
+	for i = 0; i < 12; i++ {
+		checksum += factor[i%2] * int32(cleaned[i]-'0')
+	}
+
+	return (int32(cleaned[12]-'0'))-((10-(checksum%10))%10) == 0
 }
 
 func IsUUID3(str string) bool {

@@ -331,3 +331,502 @@ func TestIsPrintableASCII(t *testing.T) {
 		assert.Equal(t.expected, actual)
 	}
 }
+
+func TestIsUUIDMixed(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"xxxa987Fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"a987Fbc9-4bed-3078-cf07-9141ba07c9f3xxx", false},
+		{"a987Fbc94bed3078cf079141ba07c9f3", false},
+		{"934859", false},
+		{"987fbc9-4bed-3078-cf07a-9141ba07c9F3", false},
+		{"aaaaaaaa-1111-1111-aaaG-111111111111", false},
+		{"a987Fbc9-4bed-3078-cf07-9141ba07c9f3", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUIDMixed(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsUUID5Mixed(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"xxxa987Fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"9c858901-8a57-4791-81Fe-4c455b099bc9", false},
+		{"a987Fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"987Fbc97-4bed-5078-af07-9141ba07c9f3", true},
+		{"987Fbc97-4bed-5078-9f07-9141ba07c9f3", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUID5Mixed(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+
+func TestIsUUID4Mixed(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"xxxa987fbc9-4bed-3078-cf07-9141ba07c9F3", false},
+		{"a987fbc9-4bed-5078-af07-9141ba07c9F3", false},
+		{"934859", false},
+		{"57b73598-8764-4ad0-a76A-679bb6640eb1", true},
+		{"625e63f3-58f5-40b7-83a1-a72ad31acFfb", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUID4Mixed(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsUUID3Mixed(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"412452646", false},
+		{"xxxa987fbc9-4bed-3078-cf07-9141ba07c9F3", false},
+		{"a987fbc9-4bed-4078-8f07-9141ba07c9F3", false},
+		{"a987fbc9-4bed-3078-cf07-9141ba07c9F3", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUID3Mixed(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsUUID(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"xxxa987fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"a987fbc9-4bed-3078-cf07-9141ba07c9f3xxx", false},
+		{"a987fbc94bed3078cf079141ba07c9f3", false},
+		{"934859", false},
+		{"987fbc9-4bed-3078-cf07a-9141ba07c9f3", false},
+		{"aaaaaaaa-1111-1111-aaag-111111111111", false},
+		{"a987fbc9-4bed-3078-cf07-9141ba07c9f3", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUID(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsUUID5(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"xxxa987fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"9c858901-8a57-4791-81fe-4c455b099bc9", false},
+		{"a987fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"987fbc97-4bed-5078-af07-9141ba07c9f3", true},
+		{"987fbc97-4bed-5078-9f07-9141ba07c9f3", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUID5(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsUUID4(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"xxxa987fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"a987fbc9-4bed-5078-af07-9141ba07c9f3", false},
+		{"934859", false},
+		{"57b73598-8764-4ad0-a76a-679bb6640eb1", true},
+		{"625e63f3-58f5-40b7-83a1-a72ad31acffb", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUID4(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsUUID3(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"412452646", false},
+		{"xxxa987fbc9-4bed-3078-cf07-9141ba07c9f3", false},
+		{"a987fbc9-4bed-4078-8f07-9141ba07c9f3", false},
+		{"a987fbc9-4bed-3078-cf07-9141ba07c9f3", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsUUID3(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsISBN13(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"foo", false},
+		{"3-8362-2119-5", false},
+		{"01234567890ab", false},
+		{"978 3 8362 2119 0", false},
+		{"9784873113685", true},
+		{"978-4-87311-368-5", true},
+		{"978 3401013190", true},
+		{"978-3-8362-2119-1", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsISBN13(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsISBN10(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"foo", false},
+		{"3423214121", false},
+		{"978-3836221191", false},
+		{"3-423-21412-1", false},
+		{"3 423 21412 1", false},
+		{"3836221195", true},
+		{"1-61729-085-8", true},
+		{"3 423 21412 0", true},
+		{"3 401 01319 X", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsISBN10(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsBase64URL(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		// empty string, although a valid base64 string, should fail
+		{"", false},
+		// invalid length
+		{"a", false},
+		// base64 with padding
+		{"Zg==", true},
+		{"Zm8=", true},
+		// base64 without padding
+		{"Zm9v", true},
+		{"Zg", false},
+		{"Zm8", false},
+		// base64 URL safe encoding with invalid, special characters '+' and '/'
+		{"FPucA9l+", false},
+		{"FPucA/lz", false},
+		// base64 URL safe encoding with valid, special characters '-' and '_'
+		{"FPucA9l-", true},
+		{"FPucA_lz", true},
+		// non base64 characters
+		{"@mc=", false},
+		{"Zm 9", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsBase64URL(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsBase64(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"dW5pY29ybg==", true},
+		{"dGhpIGlzIGEgdGVzdCBiYXNlNjQ=", true},
+		{"dW5pY29ybg== foo bar", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsBase64(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsEmail(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"test", false},
+		{"test@", false},
+		{"test.com", false},
+		{"test@test.com", true},
+		{"test@test.org", true},
+		{"jack!_24@hotmail.com", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsEmail(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsHSL(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"hsl(360,100%,50%)", true},
+		{"hsl(0,0%,0%)", true},
+		{"hsl(361,100%,50%)", false},
+		{"hsl(361,101%,50%)", false},
+		{"hsl(361,100%,101%)", false},
+		{"hsl(-10,100%,100%)", false},
+		{"1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsHSL(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsHSLA(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"hsla(360,100%,100%,1)", true},
+		{"hsla(360,100%,100%,0.5)", true},
+		{"hsla(0,0%,0%, 0)", true},
+		{"hsl(361,100%,50%,1)", false},
+		{"hsl(361,100%,50%)", false},
+		{"hsla(361,100%,50%)", false},
+		{"hsla(360,101%,50%)", false},
+		{"hsla(360,100%,101%)", false},
+		{"1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsHSLA(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsRGB(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"rgb(0,31,255)", true},
+		{"rgb(0,  31, 255)", true},
+		{"rgb(10%,  50%, 100%)", true},
+		{"rgb(10%,  50%, 55)", false},
+		{"rgb(1,349,275)", false},
+		{"rgb(01,31,255)", false},
+		{"rgba(0,31,255)", false},
+		{"1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsRGB(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsRGBA(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"rgba(0,31,255,0.5)", true},
+		{"rgba(0,31,255,0.12)", true},
+		{"rgba(12%,55%,100%,0.12)", true},
+		{"rgba( 0,  31, 255, 0.5)", true},
+		{"rgba(12%,55,100%,0.12)", false},
+		{"rgb(0,  31, 255)", false},
+		{"rgb(1,349,275,0.5)", false},
+		{"rgb(01,31,255,0.5)", false},
+		{"1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsRGBA(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsHexcolor(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"#fff", true},
+		{"#c2c2c2", true},
+		{"#aCbCcC", true},
+		{"#123123", true},
+		{"fff", false},
+		{"fffFF", false},
+		{"#GGG", false},
+		{"1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsHexcolor(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsHexadecimal(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"ff0044", true},
+		{"0xff0044", true},
+		{"0Xff0044", true},
+		{"abcdefg", false},
+		{"-1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsHexadecimal(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsNumber(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"1", true},
+		{"+1", false},
+		{"-1", false},
+		{"1.12", false},
+		{"1.o", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsNumber(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsNumeric(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"1", true},
+		{"+1", true},
+		{"-1", true},
+		{"1.12", true},
+		{"1.o", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsNumeric(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsAlphaUnicodeNumeric(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"abc", true},
+		{"this is a test string", false},
+		{"这是一个测试字符串", true},
+		{"\u0031\u0032\u0033", true}, // unicode 5
+		{"123", true},
+		{"<>@;.-=", false},
+		{"ひらがな・カタカナ、．漢字", false},
+		{"あいうえおfoobar", true},
+		{"test＠example.com", false},
+		{"1234abcDE", true},
+		{"ｶﾀｶﾅ", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsAlphaUnicodeNumeric(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsAlphaUnicode(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"abc", true},
+		{"this is a test string", false},
+		{"这是一个测试字符串", true},
+		{"123", false},
+		{"<>@;.-=", false},
+		{"ひらがな・カタカナ、．漢字", false},
+		{"あいうえおfoobar", true},
+		{"test＠example.com", false},
+		{"1234abcDE", false},
+		{"ｶﾀｶﾅ", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsAlphaUnicode(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsAlphaNumeric(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"abc!23", false},
+		{"5", true},
+		{"abcd123", true},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsAlphaNumeric(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
+
+func TestIsAlpha(t *testing.T) {
+	assert := assert.New(t)
+
+	testCases := []testCase{
+		{"", false},
+		{"abcd", true},
+		{"abc®", false},
+		{ "abc÷", false},
+		{"abc1", false},
+		{"this is a test string", false},
+		{"1", false},
+	}
+
+	for _, t := range testCases {
+		actual := validator.IsAlpha(t.param)
+		assert.Equal(t.expected, actual)
+	}
+}
