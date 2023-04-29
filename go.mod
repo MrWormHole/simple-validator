@@ -1,9 +1,8 @@
-module github.com/mrwormhole/simple-validator
+module github.com/MrWormHole/simple-validator
 
 go 1.18
 
 require (
-	github.com/MrWormHole/simple-validator v0.0.0-20210419043213-a403a2d76cc2
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/crypto v0.8.0
 )
